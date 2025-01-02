@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const SECURITY_CODE = "paradigma";
 
 function UseState({name}) {
-    const [codigoValue, setCodigoValue] = React.useState("");
-    const [error, setError] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
+const [state, setState] = useState({
+    codigoValue: "",
+    error: false,
+    loading: false,
+});
 
-    console.log("Error value: ", error);
+    // const [codigoValue, setCodigoValue] = React.useState("");
+    // const [error, setError] = React.useState(false);
+    // const [loading, setLoading] = React.useState(false);
+
 
     // React.useEffect(() => {
     //     if(!!loading) {
@@ -27,24 +32,37 @@ function UseState({name}) {
         <div>
         <h2>Eliminar {name}</h2>
         <p>Escribe el codigo de seguridad</p>
-        {error && <p>Error: codigo incorrecto</p>}
-        {loading && <p>Cargando...</p>}
+        {state.error && <p>Error: codigo incorrecto</p>}
+        {state.loading && <p>Cargando...</p>}
         <input type="text" placeholder='Codigo de seguridad'
-        value={codigoValue}
+        value={state.codigoValue}
         onChange={(e) => {
-            setError(false);
-            setCodigoValue(e.target.value);
+            setState({
+                ...state,
+                codigoValue: e.target.value, error: false,});
         }}
         />
         <button onClick={() => {
-            setLoading(true);
-            setError(false);
+            setState({
+                ...state,
+                loading: true,
+                error: false,
+            });
             setTimeout(() => {
-                if(codigoValue !== SECURITY_CODE) {
+                if(state.codigoValue !== SECURITY_CODE) {
                     console.log("Codigo incorrecto");
-                    setError(true);
+                    setState({
+                        ...state,
+                        error: true,
+                        loading: false,
+                    });
+                } else {
+                    setState({
+                        ...state,
+                        loading: false,
+                    });
                 }
-                setLoading(false);
+
             }
             , 2000);
         }}>Comprobar</button>
