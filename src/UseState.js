@@ -11,6 +11,62 @@ const [state, setState] = useState({
     deleted: false,
 });
 
+const onConfirm = () => {
+    setState({
+        ...state,
+        loading: false,
+        confirmed: true,
+    });
+};
+
+const onError = () => {
+    console.log("Codigo incorrecto");
+    setState({
+        ...state,
+        error: true,
+        loading: false,
+    });
+};
+
+function onCheck() {
+    setState({
+        ...state,
+        loading: true,
+        error: false,
+    });
+}
+
+const onDelete = () => {
+    setState({
+        ...state,
+        deleted: true,
+    });
+};
+
+const onReset = () => {
+    setState({
+        ...state,
+codigoValue: "",
+error: false,
+loading: false,
+confirmed: false,
+deleted: false,
+    });
+};
+
+const onDontDelete = () => {
+    setState({
+        ...state,
+        confirmed: false,
+    });
+};
+
+const onCodigoChange = (newValue) => {
+    setState({
+        ...state,
+        codigoValue: newValue, error: false,});
+}
+
     // const [codigoValue, setCodigoValue] = React.useState("");
     // const [error, setError] = React.useState(false);
     // const [loading, setLoading] = React.useState(false);
@@ -40,31 +96,16 @@ const [state, setState] = useState({
             <input type="text" placeholder='Codigo de seguridad'
             value={state.codigoValue}
             onChange={(e) => {
-                setState({
-                    ...state,
-                    codigoValue: e.target.value, error: false,});
+                onCodigoChange(e.target.value);
             }}
             />
             <button onClick={() => {
-                setState({
-                    ...state,
-                    loading: true,
-                    error: false,
-                });
+                onCheck();
                 setTimeout(() => {
                     if(state.codigoValue !== SECURITY_CODE) {
-                        console.log("Codigo incorrecto");
-                        setState({
-                            ...state,
-                            error: true,
-                            loading: false,
-                        });
+                        onError();
                     } else {
-                        setState({
-                            ...state,
-                            loading: false,
-                            confirmed: true,
-                        });
+                        onConfirm();
                     }
     
                 }
@@ -78,19 +119,13 @@ const [state, setState] = useState({
             <p>Esta seguro de que quiere eliminar este codigo?</p>
             <button
             onClick={() => {
-                setState({
-                    ...state,
-                    deleted: true,
-                });
+onDelete();
             }
         }
             >Si, eliminar</button>
             <button
             onClick={() => {
-                setState({
-                    ...state,
-                    confirmed: false,
-                });
+onDontDelete();
             }}
             >No</button>
     </React.Fragment>)
@@ -100,14 +135,7 @@ return (<React.Fragment>
 
             <button
             onClick={() => {
-                setState({
-                    ...state,
-    codigoValue: "",
-    error: false,
-    loading: false,
-    confirmed: false,
-    deleted: false,
-                });
+onReset();
             }
         }
             >Recuperar UseState</button>
