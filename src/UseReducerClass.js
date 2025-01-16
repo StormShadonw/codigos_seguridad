@@ -35,7 +35,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
             value={state.codigoValue}
             onChange={(e) => {
                 dispatch({
-                    type: "WRITE",
+                    type: actionTypes.write,
                     payload: e.target.value,
                 });
                 // onCodigoChange(e.target.value);
@@ -43,16 +43,16 @@ const [state, dispatch] = useReducer(reducer, initialState);
             />
             <button onClick={() => {
                                 dispatch({
-                                    type: "CHECK",
+                                    type: actionTypes.check,
                                 });
                 setTimeout(() => {
                     if(state.codigoValue !== SECURITY_CODE) {
                         dispatch({
-                            type: "ERROR",
+                            type: actionTypes.error,
                         });
                     } else {
                         dispatch({
-                            type: "CONFIRM",
+                            type: actionTypes.confirm,
                         });
                     }
     
@@ -68,7 +68,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
             <button
             onClick={() => {
                 dispatch({
-                    type: "DELETE",
+                    type: actionTypes.delete,
                 });
             }
         }
@@ -76,7 +76,7 @@ const [state, dispatch] = useReducer(reducer, initialState);
             <button
             onClick={() => {
                 dispatch({
-                    type: "NODELETE",
+                    type: actionTypes.notdelete,
                 });
             }}
             >No</button>
@@ -88,7 +88,7 @@ return (<React.Fragment>
             <button
             onClick={() => {
                 dispatch({
-                    type: "RESET",
+                    type: actionTypes.reset,
                 });
             }
         }
@@ -99,10 +99,18 @@ return (<React.Fragment>
 
 }
 
-
+const actionTypes = {
+    error: "ERROR",
+    check: "CHECK",
+    confirm: "CONFIRM",
+    delete: "DELETE",
+    notdelete: "NOTDELETE",
+    write: "WRITE",
+    reset: "RESET",
+}
 
 const initialState = {
-    codigoValue: "paradigma",
+    codigoValue: "",
     error: false,
     loading: false,
     confirmed: false,
@@ -110,41 +118,41 @@ const initialState = {
 }
 
 const reducerObject = (state, payload) => ({
-    "ERROR": {
+    [actionTypes.error]: {
         ...state,
         error: true,
         loading: false,
     },
-    "CHECK": {
+    [actionTypes.check]: {
         ...state,
         loading: true,
         error: false,
     },
-    "CONFIRM": {
+    [actionTypes.confirm]: {
         ...state,
         loading: false,
         confirmed: true,
     },
-    "DELETE": {
+    [actionTypes.delete]: {
         ...state,
         deleted: true,
     },
-    "NOTDELETE": {
+    [actionTypes.notdelete]: {
         ...state,
         confirmed: false,
     },
-    "WRITE": {
+    [actionTypes.write]: {
         ...state,
         codigoValue: payload,
          error: false,
     },
-    "RESET": {
+    [actionTypes.reset]: {
         ...state,
-codigoValue: "",
-error: false,
-loading: false,
-confirmed: false,
-deleted: false,
+        codigoValue: "",
+        error: false,
+        loading: false,
+        confirmed: false,
+        deleted: false,
     },
 
 
